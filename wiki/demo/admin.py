@@ -10,3 +10,4 @@ class WriterAdmin(admin.ModelAdmin):
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('title', 'body', 'pub_on', 'pub_by')
+    readonly_fields = ('wiki_id',)
