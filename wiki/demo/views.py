@@ -8,6 +8,6 @@ def anno_login(request):
     try:
         anno = User.objects.get(username="ANNO")
     except User.DoesNotExist:
-        return redirect('/admin/')
+        return redirect('/admin/login')
     auth.login(request, anno)
-    return redirect('/admin/demo/article')
+    return redirect('/admin/')
