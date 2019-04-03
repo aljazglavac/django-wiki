@@ -8,6 +8,6 @@ class Writer(m.Model):
 
 class Article(m.Model):
     title = m.CharField('Article title', max_length=30)
-    body = m.CharField('Article body text', max_length=400)
+    body = m.TextField('Article body text', max_length=400)
     pub_on = m.DateTimeField('Date this article was published.')
     pub_by = m.ForeignKey(Writer, on_delete=m.CASCADE)
