@@ -10,16 +10,10 @@ PERMISSIONS = [
     'view',
 ]
 
-APPS = [
-    'demo',
+MODELS = [
+    'article',
 ]
 
-
-def get_apps_models(user_apps):
-    m = []
-    for app in user_apps:
-        m.extend([x for x in apps.all_models[app]])
-    return m
 
 
 class Command(BaseCommand):
@@ -31,7 +25,6 @@ class Command(BaseCommand):
 
     def create_ANNO_group(self, *args, **kwargs):
         anno_group, created = Group.objects.get_or_create(name=GROUP)
-        MODELS = get_apps_models(APPS)
 
         if created:
             self.stdout.write("Creating ANNO group.")
