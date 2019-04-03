@@ -8,6 +8,7 @@ from .models import Article
 class ArticleAdmin(admin.ModelAdmin):
     list_display = ('title', 'body', 'pub_on', 'pub_by')
     readonly_fields = ('wiki_id',)
+    change_form_template = 'demo/custom_change_form.html'
 
     def save_model(self, request, obj, form, change):
         try:
