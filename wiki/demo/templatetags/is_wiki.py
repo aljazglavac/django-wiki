@@ -1,5 +1,5 @@
 from django import template
-import core.models as m
+import demo.models as m
 
 register = template.Library()
 
