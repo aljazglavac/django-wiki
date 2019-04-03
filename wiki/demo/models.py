@@ -11,8 +11,8 @@ class Writer(m.Model):
 class Article(m.Model):
     title = m.CharField('Article title', max_length=30)
     body = m.TextField('Article body text', max_length=400)
-    pub_on = m.DateTimeField('Date this article was published.')
-    pub_by = m.ForeignKey(Writer, on_delete=m.CASCADE)
+    pub_on = m.DateTimeField('Date this article was published')
+    pub_by = m.ForeignKey(Writer, on_delete=m.CASCADE, verbose_name='Writer that wrote this article')
 
     def __str__(self):
         return '{} by {}'.format(self.title, self.pub_by)
