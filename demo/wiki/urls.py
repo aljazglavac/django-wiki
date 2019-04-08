@@ -11,7 +11,7 @@ SYS_DEF = [
     'log entry', 'permission', 'group', 'user', 'content type', 'session'
 ]
 all_content = ContentType.objects.all()
-str_content = [str(c) for c in all_content if c not in SYS_DEF]
+str_content = [str(c) for c in all_content if str(c) not in SYS_DEF]
 
 extrapatterns = []
 for model in str_content:
