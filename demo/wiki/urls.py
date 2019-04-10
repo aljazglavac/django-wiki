@@ -1,9 +1,10 @@
 from django.contrib.contenttypes.models import ContentType
 from django.urls import path
-from .views import anno_login
+from .views import anno_login, get_wiki_entries
 
 urlpatterns = [
     path('', anno_login),
+    path('entries', get_wiki_entries),
 ]
 
 
