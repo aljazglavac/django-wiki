@@ -12,4 +12,9 @@ class PostAdmin(admin.StackedInline):
 @admin.register(Reporter)
 class ReporterAdmin(WikiModelAdmin):  # USER ADD
     inlines = [PostAdmin]
-    pass
+    readonly_fields = ["wiki_id"]
+
+
+@admin.register(Post)
+class PostAdmin(WikiModelAdmin):
+    readonly_fields = ["wiki_id"]
