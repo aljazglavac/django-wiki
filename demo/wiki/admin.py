@@ -36,6 +36,7 @@ class WikiModelAdmin(admin.ModelAdmin):
             obj.save(update_fields=["wiki_id"])
 
     def save_formset(self, request, form, formset, change):
+        pass
         try:
             user_group = Group.objects.filter(user=request.user)[0].name
         except:

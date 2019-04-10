@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'wiki',
     'app',
     'app1',
+    'app2',
 ]
 
 MIDDLEWARE = [
