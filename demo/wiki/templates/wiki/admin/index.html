@@ -54,6 +54,7 @@
 {% endblock %}
 
 {% block sidebar %}
+{% if request.user.is_superuser %}
 <div id="content-related">
     <div class="module" id="recent-actions-module">
 			<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -79,4 +80,5 @@
 			</script>
     </div>
 </div>
+{% endif %}
 {% endblock %}
