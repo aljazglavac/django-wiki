@@ -79,8 +79,12 @@ WSGI_APPLICATION = 'demo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': os.environ.get('PGDATABASE', 'wiki'),
+        'USER': os.environ.get('PGUSER', 'wiki'),
+        'PASSWORD': os.environ.get('PGPASSWORD', 'wiki'),
+        'HOST': os.environ.get('PGHOST', 'localhost'),
+        'PORT': '5432'
     }
 }
 
