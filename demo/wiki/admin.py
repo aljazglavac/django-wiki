@@ -3,6 +3,9 @@ from django.contrib.auth.models import Group
 from django.forms.models import model_to_dict
 
 
+admin.site.index_template = 'wiki/admin/index.html'
+
+
 class WikiModelAdmin(admin.ModelAdmin):
     readonly_fields = ('wiki_id', )
     change_form_template = 'wiki/custom_change_form.html'
