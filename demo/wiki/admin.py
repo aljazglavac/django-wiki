@@ -9,7 +9,7 @@ admin.site.index_template = 'wiki/admin/index.html'
 class WikiModelAdmin(admin.ModelAdmin):
     readonly_fields = ('wiki_id', )
 
-    #change_form_template = 'wiki/custom_change_form.html'
+    change_form_template = 'wiki/custom_change_form.html'
 
     def is_wiki(self, obj):
         return obj.pk != obj.wiki_id or obj.wiki_id is None
