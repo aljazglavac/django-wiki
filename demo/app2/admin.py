@@ -3,7 +3,7 @@ from wiki.admin import WikiModelAdmin  # USER ADD
 from .models import Reporter, Post
 
 
-class PostAdmin(admin.StackedInline):
+class PostInline(admin.StackedInline):
     model = Post
     extra = 0
     readonly_fields = ["wiki_id"]
@@ -11,7 +11,7 @@ class PostAdmin(admin.StackedInline):
 
 @admin.register(Reporter)
 class ReporterAdmin(WikiModelAdmin):  # USER ADD
-    inlines = [PostAdmin]
+    inlines = [PostInline]
     readonly_fields = ["wiki_id"]
 
 
