@@ -38,8 +38,10 @@ def get_wiki_entries(request):
 
     for model in models:
         for wiki in model.objects.filter(is_not_wiki).distinct():
-            display_string = "{} in {}".format(str(wiki), model.__name__)
-            all_model_wikis.append((display_string, wiki.pk))
+            change_link = "<a href='/admin/{}/{}/{}/change/'>{} in {}</a><br>".format(
+                wiki._meta.app_label, model.__name__.lower(), wiki.pk,
+                str(wiki), model.__name__)
+            all_model_wikis.extend(change_link)
 
     if len(all_model_wikis) == 0:
         msg = "No new entry suggestions need to be reviewed. "

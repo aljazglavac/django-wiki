@@ -67,7 +67,7 @@
 						success: function (data) {
 							var entry = "";
 							jQuery.each(data['wikis'], function (index, value) {
-								entry += "<a href='/admin/core/poi/" + value[1] + "/change/'>" + value[0] + "</a><br>";
+								entry += value;
 							});
 							if (document.getElementById("wiki") !== null) {
 								document.getElementById("message").innerHTML = data['message'];
