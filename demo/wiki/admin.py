@@ -36,9 +36,9 @@ class WikiModelAdmin(admin.ModelAdmin):
         except:
             user_group = ''
         if 'ANNO' in user_group:
-            is_wiki = ( instance.pk != instance.wiki_id ) \
-                      or ( instance.wiki_id == None and instance.pk != None )
-            is_new = instance.pk == None
+            is_wiki = ( obj.pk != obj.wiki_id ) \
+                      or ( obj.wiki_id == None and obj.pk != None )
+            is_new = obj.pk == None
             if not is_wiki:
                 copy_of_obj = dict(model_to_dict(obj))
                 copy_of_obj['id'] = None
