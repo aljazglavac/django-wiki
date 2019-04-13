@@ -1,10 +1,10 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.auth.models import Group
-from django.forms.models import model_to_dict
+from django.forms.models import model_to_dict, ModelForm
 from django.db.models import ForeignKey, OneToOneField
-from django.forms.models import ModelForm
 from django.shortcuts import redirect
-import app3.models as m
+from .messages import (accept_message_handler, save_message_handler,
+                       submit_message_handler, reject_message_handler)
 
 admin.site.index_template = 'wiki/admin/index.html'
 
@@ -58,6 +58,7 @@ class WikiModelAdmin(admin.ModelAdmin):
         except:
             user_group = ''
         if 'ANNO' in user_group:
+            submit_message_handler(request)
             is_wiki = ( obj.pk != obj.wiki_id ) \
               or ( obj.wiki_id == None and obj.pk != None )
             is_new = obj.pk == None
@@ -85,12 +86,15 @@ class WikiModelAdmin(admin.ModelAdmin):
 
             if not has_foreignkey:
                 request.session['parent'] = obj.pk
+
         else:
             obj.save()
             obj.wiki_id = obj.pk
             obj.save(update_fields=["wiki_id"])
+            save_message_handler(request)
 
     def handle_accept(self, request, obj):
+        accept_message_handler(request)
         if obj.wiki_id is None:
             obj.wiki_id = obj.pk
             obj.save()
@@ -121,8 +125,9 @@ class WikiModelAdmin(admin.ModelAdmin):
         parent.save()
         obj.delete()
 
-    def handle_reject(self, obj):
+    def handle_reject(self, request, obj):
         obj.delete()
+        reject_message_handler(request)
 
     def save_model(self, request, obj, form, change):
         if '_accept' in request.POST:
@@ -131,6 +136,7 @@ class WikiModelAdmin(admin.ModelAdmin):
             self.handle_reject(obj)
         elif '_save' in request.POST:
             self.handle_save(request, obj)
+
         return redirect('/admin/')
 
     def save_formset(self, request, form, formset, change):
@@ -139,7 +145,7 @@ class WikiModelAdmin(admin.ModelAdmin):
             if '_accept' in request.POST:
                 self.handle_accept(request, instance)
             elif '_reject' in request.POST:
-                self.handle_reject(i)
+                self.handle_reject(request, instance)
             elif '_save' in request.POST:
                 self.handle_save(request, instance)
         return redirect('/admin/')
