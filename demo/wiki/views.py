@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q, F
 from django.contrib.auth.models import User
 from django.contrib import auth
-from .admin import model_has_relation 
+from .support_functions import model_has_relation 
 
 SYS_DEF = [
     'log entry', 'permission', 'group', 'user', 'content type', 'session'
