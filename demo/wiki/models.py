@@ -13,3 +13,6 @@ class CustomManager(m.Manager):
 class WikiModel(m.Model):
     wiki_id = m.IntegerField(null=True)
     objects = CustomManager()
+
+    class Meta:
+        abstract = True

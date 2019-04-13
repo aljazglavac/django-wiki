@@ -13,26 +13,26 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Reporter',
+            name='Oseba',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('first_name', models.CharField(max_length=30)),
-                ('last_name', models.CharField(max_length=30)),
-                ('email', models.EmailField(max_length=254)),
                 ('wiki_id', models.IntegerField(null=True)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Post',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('headline', models.CharField(max_length=100)),
-                ('pub_date', models.DateField()),
-                ('wiki_id', models.IntegerField(null=True)),
-                ('reporter', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app2.Reporter')),
+                ('ime', models.CharField(max_length=100)),
             ],
             options={
-                'ordering': ('headline',),
+                'abstract': False,
+            },
+        ),
+        migrations.CreateModel(
+            name='Knjiga',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('wiki_id', models.IntegerField(null=True)),
+                ('naslov', models.CharField(max_length=100)),
+                ('oseba', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app5.Oseba')),
+            ],
+            options={
+                'abstract': False,
             },
         ),
     ]

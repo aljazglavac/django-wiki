@@ -1,10 +1,11 @@
 from django.contrib import admin
-from wiki.admin import WikiModelAdmin  # USER ADD
+from wiki.admin import WikiModelAdmin, WikiInlineModelForm
 from .models import Book, Author
 
 
 class BookInline(admin.StackedInline):
     model = Book
+    form = WikiInlineModelForm
     extra = 0
     readonly_fields = ["wiki_id"]
 

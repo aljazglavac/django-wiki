@@ -37,6 +37,8 @@ def get_wiki_entries(request):
     all_model_wikis = []
 
     for model in models:
+        if model is None:
+            continue
         for wiki in model.objects.filter(is_not_wiki).distinct():
             change_link = "<a href='/admin/{}/{}/{}/change/'>{} in {}</a><br>".format(
                 wiki._meta.app_label, model.__name__.lower(), wiki.pk,
