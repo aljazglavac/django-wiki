@@ -11,6 +11,47 @@ admin.site.index_template = 'wiki/admin/index.html'
 do_not_update = set(['id', 'wiki_id'])
 
 
+def model_has_relation(model):
+    fields = model._meta.get_fields()
+    for field in fields:
+        if isinstance(field, ForeignKey):
+            return True
+    return False
+
+def obj_has_foreignkey(obj):
+    dict_obj = dict(model_to_dict(obj))
+    for key, value in dict_obj.items():
+        field_object = type(obj)._meta.get_field(key)
+        if isinstance(field_object, ForeignKey) and not isinstance(
+                field_object, OneToOneField):
+            return True
+    return False
+
+
+def get_foreignkey_field_name(obj):
+    dict_obj = dict(model_to_dict(obj))
+    for key, value in dict_obj.items():
+        field_object = type(obj)._meta.get_field(key)
+        if isinstance(field_object, ForeignKey):
+            return key
+    return None
+
+
+def get_model_of_foreignkey_field(obj):
+    dict_obj = dict(model_to_dict(obj))
+    for key, value in dict_obj.items():
+        field_object = type(obj)._meta.get_field(key)
+        if isinstance(field_object, ForeignKey):
+            return type(getattr(obj, key))
+    return None
+
+def is_obj_wiki(obj):
+    return ( obj.pk != obj.wiki_id ) \
+          or ( obj.wiki_id == None and obj.pk != None )
+
+def is_obj_new(obj):
+    return obj.pk == None
+
 class WikiInlineModelForm(ModelForm):
     def has_changed(self):
         return True
@@ -20,34 +61,6 @@ class WikiModelAdmin(admin.ModelAdmin):
     readonly_fields = ('wiki_id', )
 
     change_form_template = 'wiki/custom_change_form.html'
-
-    def is_wiki(self, obj):
-        return obj.pk != obj.wiki_id or obj.wiki_id is None
-
-    def obj_has_foreignkey(self, obj):
-        dict_obj = dict(model_to_dict(obj))
-        for key, value in dict_obj.items():
-            field_object = type(obj)._meta.get_field(key)
-            if isinstance(field_object, ForeignKey) and not isinstance(
-                    field_object, OneToOneField):
-                return True
-        return False
-
-    def get_foreignkey_field_name(self, obj):
-        dict_obj = dict(model_to_dict(obj))
-        for key, value in dict_obj.items():
-            field_object = type(obj)._meta.get_field(key)
-            if isinstance(field_object, ForeignKey):
-                return key
-        return None
-
-    def get_model_of_foreignkey_field(self, obj):
-        dict_obj = dict(model_to_dict(obj))
-        for key, value in dict_obj.items():
-            field_object = type(obj)._meta.get_field(key)
-            if isinstance(field_object, ForeignKey):
-                return type(getattr(obj, key))
-        return None
 
     def message_user(self, *args):
         pass
@@ -59,16 +72,15 @@ class WikiModelAdmin(admin.ModelAdmin):
             user_group = ''
         if 'ANNO' in user_group:
             submit_message_handler(request)
-            is_wiki = ( obj.pk != obj.wiki_id ) \
-              or ( obj.wiki_id == None and obj.pk != None )
-            is_new = obj.pk == None
-            has_foreignkey = self.obj_has_foreignkey(obj)
+            is_wiki = is_obj_wiki(obj)
+            is_new = is_obj_new(obj) 
+            has_foreignkey = obj_has_foreignkey(obj)
 
             if has_foreignkey:
                 wiki_parent_id = request.session['parent']
-                parent_model = self.get_model_of_foreignkey_field(obj)
+                parent_model = get_model_of_foreignkey_field(obj)
                 wiki_parent = parent_model.objects.get(pk=int(wiki_parent_id))
-                parent_field = self.get_foreignkey_field_name(obj)
+                parent_field = get_foreignkey_field_name(obj)
 
             if is_new:
                 obj.wiki_id = None
@@ -100,9 +112,9 @@ class WikiModelAdmin(admin.ModelAdmin):
             obj.save()
             return
 
-        has_foreignkey = self.obj_has_foreignkey(obj)
+        has_foreignkey = obj_has_foreignkey(obj)
         if has_foreignkey:
-            foreignkey_name = self.get_foreignkey_field_name(obj)
+            foreignkey_name = get_foreignkey_field_name(obj)
             do_not_update.add(foreignkey_name)
 
         parent = type(obj).objects.get(pk=obj.wiki_id)
@@ -117,7 +129,7 @@ class WikiModelAdmin(admin.ModelAdmin):
         if not has_foreignkey:
             request.session['parent'] = parent.pk
         else:
-            foreignkey_model = self.get_model_of_foreignkey_field(parent)
+            foreignkey_model = get_model_of_foreignkey_field(parent)
             foreignkey_obj = foreignkey_model.objects.get(
                 pk=int(request.session['parent']))
             setattr(parent, foreignkey_name, foreignkey_obj)

@@ -4,6 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q, F
 from django.contrib.auth.models import User
 from django.contrib import auth
+from .admin import model_has_relation 
 
 SYS_DEF = [
     'log entry', 'permission', 'group', 'user', 'content type', 'session'
@@ -38,6 +39,8 @@ def get_wiki_entries(request):
 
     for model in models:
         if model is None:
+            continue
+        if model_has_relation(model):
             continue
         for wiki in model.objects.filter(is_not_wiki).distinct():
             change_link = "<a href='/admin/{}/{}/{}/change/'>{} in {}</a><br>".format(
