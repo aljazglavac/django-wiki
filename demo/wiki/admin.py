@@ -70,47 +70,40 @@ class WikiModelAdmin(admin.ModelAdmin):
         pass
 
     def handle_save(self, request, obj):
-        try:
-            user_group = Group.objects.filter(user=request.user)[0].name
-        except:
-            user_group = ''
-        if 'ANNO' in user_group:
-            submit_message_handler(request)
-            is_wiki = is_obj_wiki(obj)
-            is_new = is_obj_new(obj)
-            has_foreignkey = obj_has_foreignkey(obj)
+        obj.save()
+        obj.wiki_id = obj.pk
+        obj.save(update_fields=["wiki_id"])
 
-            if has_foreignkey:
-                wiki_parent_id = request.session['parent']
-                parent_model = get_model_of_foreignkey_field(obj)
-                wiki_parent = parent_model.objects.get(pk=int(wiki_parent_id))
-                parent_field = get_foreignkey_field_name(obj)
+    def handle_submit(self, request, obj):
+        is_wiki = is_obj_wiki(obj)
+        is_new = is_obj_new(obj)
+        has_foreignkey = obj_has_foreignkey(obj)
 
-            if is_new:
-                obj.wiki_id = None
-                obj.save()
-            elif is_wiki:
-                obj.save()
-            elif not is_wiki:
-                copy_of_obj = dict(model_to_dict(obj))
-                copy_of_obj['wiki_id'] = copy_of_obj['id']
-                copy_of_obj['id'] = None
-                if has_foreignkey:
-                    copy_of_obj[parent_field] = wiki_parent
-                obj = type(obj)(**copy_of_obj)
-                obj.save()
+        if has_foreignkey:
+            wiki_parent_id = request.session['parent']
+            parent_model = get_model_of_foreignkey_field(obj)
+            wiki_parent = parent_model.objects.get(pk=int(wiki_parent_id))
+            parent_field = get_foreignkey_field_name(obj)
 
-            if not has_foreignkey:
-                request.session['parent'] = obj.pk
-
-        else:
+        if is_new:
+            obj.wiki_id = None
             obj.save()
-            obj.wiki_id = obj.pk
-            obj.save(update_fields=["wiki_id"])
-            save_message_handler(request)
+        elif is_wiki:
+            obj.save()
+        elif not is_wiki:
+            copy_of_obj = dict(model_to_dict(obj))
+            copy_of_obj['wiki_id'] = copy_of_obj['id']
+            copy_of_obj['id'] = None
+            if has_foreignkey:
+                copy_of_obj[parent_field] = wiki_parent
+            obj = type(obj)(**copy_of_obj)
+            obj.save()
+
+        if not has_foreignkey:
+            request.session['parent'] = obj.pk
+
 
     def handle_accept(self, request, obj):
-        accept_message_handler(request)
         if obj.wiki_id is None:
             obj.wiki_id = obj.pk
             obj.save()
@@ -147,11 +140,17 @@ class WikiModelAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         if '_accept' in request.POST:
+            accept_message_handler(request)
             self.handle_accept(request, obj)
         elif '_reject' in request.POST:
+            reject_message_handler(request)
             self.handle_reject(obj)
         elif '_save' in request.POST:
+            save_message_handler(request)
             self.handle_save(request, obj)
+        elif '_submit' in request.POST:
+            submit_message_handler(request)
+            self.handle_submit(request, obj)
 
         return redirect('/admin/')
 
@@ -164,4 +163,6 @@ class WikiModelAdmin(admin.ModelAdmin):
                 self.handle_reject(request, instance)
             elif '_save' in request.POST:
                 self.handle_save(request, instance)
+            elif '_submit' in request.POST:
+                self.handle_submit(request, instance)
         return redirect('/admin/')

@@ -9,24 +9,20 @@ def add_message_only_once(request, level, msg):
 
 
 def accept_message_handler(request):
-    pass
-    add_message_only_once(request, messages.SUCCESS,
+    messages.add_message(request, messages.SUCCESS,
                          default_success_message.format('accepted'))
 
 
 def reject_message_handler(request):
-    pass
-    add_message_only_once(request, messages.SUCCESS,
+    messages.add_message(request, messages.SUCCESS,
                          default_success_message.format('rejected'))
 
 
 def save_message_handler(request):
-    pass
-    add_message_only_once(request, messages.SUCCESS,
+    messages.add_message(request, messages.SUCCESS,
                          default_success_message.format('saved'))
 
 
 def submit_message_handler(request):
-    pass
-    add_message_only_once(request, messages.SUCCESS,
+    messages.add_message(request, messages.SUCCESS,
                          default_success_message.format('submited'))
