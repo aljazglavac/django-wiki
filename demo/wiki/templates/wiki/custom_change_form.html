@@ -7,6 +7,10 @@
 			<input type="submit" value='Accept' name="_accept" />
 			<input type="submit" value='Reject' name="_reject" />
 		</div>
+	{% elif request.user|has_group:"ANNO" and not request.path|is_wiki %}
+		<div class="submit-row">
+			<input type="submit" value='Submit' name="_submit" />
+		</div>
 	{% elif request.path|has_wiki_entry %}
 		<div class="submit-row">
 			<h2 style="text-align:left;float:left;">This already has a entry suggestion waiting to be reviewed.</h2>
