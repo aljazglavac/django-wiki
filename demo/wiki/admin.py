@@ -18,6 +18,7 @@ def model_has_relation(model):
             return True
     return False
 
+
 def obj_has_foreignkey(obj):
     dict_obj = dict(model_to_dict(obj))
     for key, value in dict_obj.items():
@@ -45,12 +46,15 @@ def get_model_of_foreignkey_field(obj):
             return type(getattr(obj, key))
     return None
 
+
 def is_obj_wiki(obj):
     return ( obj.pk != obj.wiki_id ) \
           or ( obj.wiki_id == None and obj.pk != None )
 
+
 def is_obj_new(obj):
     return obj.pk == None
+
 
 class WikiInlineModelForm(ModelForm):
     def has_changed(self):
@@ -73,7 +77,7 @@ class WikiModelAdmin(admin.ModelAdmin):
         if 'ANNO' in user_group:
             submit_message_handler(request)
             is_wiki = is_obj_wiki(obj)
-            is_new = is_obj_new(obj) 
+            is_new = is_obj_new(obj)
             has_foreignkey = obj_has_foreignkey(obj)
 
             if has_foreignkey:
