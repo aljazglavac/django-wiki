@@ -10,6 +10,7 @@ admin.site.index_template = 'wiki/admin/index.html'
 
 do_not_update = set(['id', 'wiki_id'])
 
+
 class WikiInlineModelForm(ModelForm):
     def has_changed(self):
         return True
@@ -47,6 +48,9 @@ class WikiModelAdmin(admin.ModelAdmin):
             if isinstance(field_object, ForeignKey):
                 return type(getattr(obj, key))
         return None
+
+    def message_user(self, *args):
+        pass
 
     def handle_save(self, request, obj):
         try:
@@ -110,7 +114,8 @@ class WikiModelAdmin(admin.ModelAdmin):
             request.session['parent'] = parent.pk
         else:
             foreignkey_model = self.get_model_of_foreignkey_field(parent)
-            foreignkey_obj = foreignkey_model.objects.get(pk=int(request.session['parent']))
+            foreignkey_obj = foreignkey_model.objects.get(
+                pk=int(request.session['parent']))
             setattr(parent, foreignkey_name, foreignkey_obj)
 
         parent.save()
