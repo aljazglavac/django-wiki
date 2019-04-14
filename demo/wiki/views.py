@@ -32,6 +32,13 @@ def wiki_login(request):
 def get_wiki_entries(request):
     models = list_of_models()
     is_not_wiki = (~Q(pk=F("wiki_id")) | Q(wiki_id__isnull=True))
+    try:
+        model = request.user.username.split('-')[-1]
+        ct = ContentType.objects.get(model=model)
+        model = ct.model_class()
+        models = [model]
+    except:
+        models = list_of_models()
     all_model_wikis = []
 
     for model in models:
