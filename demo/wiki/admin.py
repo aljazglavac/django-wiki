@@ -26,17 +26,17 @@ class WikiModelAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         if '_accept' in request.POST:
-            accept_message_handler(request)
-            handle_accept(request, obj)
+            sug = handle_accept(request)
+            accept_message_handler(request, sug)
         elif '_reject' in request.POST:
             reject_message_handler(request)
             handle_reject(obj)
         elif '_save' in request.POST:
-            save_message_handler(request)
             handle_save(request, obj)
+            save_message_handler(request, obj)
         elif '_submit' in request.POST:
-            submit_message_handler(request)
-            handle_submit(request, obj)
+            sug = handle_submit(request, obj)
+            submit_message_handler(request, sug)
         return redirect('/admin/')
 
     def save_formset(self, request, form, formset, change):
