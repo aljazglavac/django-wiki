@@ -1,5 +1,7 @@
 from django.forms.models import model_to_dict
 from django.db.models import ForeignKey, OneToOneField
+
+
 def model_has_relation(model):
     fields = model._meta.get_fields()
     for field in fields:
@@ -43,3 +45,11 @@ def is_obj_wiki(obj):
 
 def is_obj_new(obj):
     return obj.pk == None
+
+
+def link_to_change_obj(obj):
+    model = type(obj)
+    change_link = "<a href='/admin/{}/{}/{}/change/'>See it here.</a>".format(
+        obj._meta.app_label, model.__name__.lower(), obj.pk,
+                str(obj), model.__name__)
+    return change_link
