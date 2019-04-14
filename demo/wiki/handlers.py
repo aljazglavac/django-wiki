@@ -39,6 +39,8 @@ def handle_submit(request, obj):
     if not has_foreignkey:
         request.session['parent'] = obj.pk
 
+    return obj
+
 
 def handle_accept(request, obj):
     if obj.wiki_id is None:
@@ -70,6 +72,8 @@ def handle_accept(request, obj):
 
     parent.save()
     obj.delete()
+
+    return parent
 
 
 def handle_reject(request, obj):
