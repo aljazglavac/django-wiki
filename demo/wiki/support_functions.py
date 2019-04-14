@@ -1,5 +1,7 @@
 from django.forms.models import model_to_dict
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import ForeignKey, OneToOneField
+from .options import SYS_DEF
 
 
 def model_has_relation(model):
@@ -52,3 +54,8 @@ def link_to_change_obj(obj, text):
     change_link = "<a href='/admin/{}/{}/{}/change/'>{}</a><br>".format(
         obj._meta.app_label, model.__name__.lower(), obj.pk, text)
     return change_link
+
+
+def list_of_models():
+    all_content = ContentType.objects.all()
+    return [c.model_class() for c in all_content if str(c) not in SYS_DEF]
