@@ -4,12 +4,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q, F
 from django.contrib.auth.models import User
 from django.contrib import auth
-from .support_functions import model_has_relation, link_to_change_obj
-
-SYS_DEF = [
-    'log entry', 'permission', 'group', 'user', 'content type', 'session'
-]
-
+from .support_functions import model_has_relation, link_to_change_obj, list_of_models
+from .options import SYS_DEF
 
 def anno_login(request):
     try:
@@ -25,11 +21,6 @@ def anno_login(request):
         auth.login(request, anno)
         return redirect('/admin/')
     return redirect('/admin/login')
-
-
-def list_of_models():
-    all_content = ContentType.objects.all()
-    return [c.model_class() for c in all_content if str(c) not in SYS_DEF]
 
 
 def get_wiki_entries(request):
