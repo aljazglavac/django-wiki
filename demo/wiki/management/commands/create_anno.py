@@ -21,9 +21,13 @@ class Command(BaseCommand):
         if len(sys.argv) <= 2:
             self.stdout.write("Please specify model/s for annoymous user.")
             models = list_of_models()
+            groups = [str(g) for g in Group.objects.all()]
             self.stdout.write("Available models:")
             for model in models:
-                self.stdout.write("\t{}".format(model.__name__.lower()))
+                name = model.__name__.lower()
+                exist = '*' if Group.objects.filter(name__icontains=name).exists() else ''
+                self.stdout.write("\t{}{}".format(name, exist))
+            self.stdout.write("already created => *")
             exit()
 
         parser.add_argument('model', nargs='+', type=str)
