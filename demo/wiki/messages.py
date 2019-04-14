@@ -1,28 +1,29 @@
 from django.contrib import messages
-
-default_success_message = 'Successfully {} suggestion'
-
-
-def add_message_only_once(request, level, msg):
-    if msg not in [m.message for m in messages.get_messages(request)]:
-        messages.add_message(request, level, msg)
+from django.utils.html import format_html
+from .support_functions import link_to_change_obj
 
 
-def accept_message_handler(request):
+def accept_message_handler(request, obj):
+    messages.add_message(
+        request, messages.SUCCESS,
+        format_html(('Successfully accepted %(link) suggestion. ') %
+                    {'link': link_to_change_obj(obj)}))
+
+
+def reject_message_handler(request, obj):
     messages.add_message(request, messages.SUCCESS,
-                         default_success_message.format('accepted'))
+                         default_message.format('rejected a suggestion'))
 
 
-def reject_message_handler(request):
-    messages.add_message(request, messages.SUCCESS,
-                         default_success_message.format('rejected'))
+def save_message_handler(request, obj):
+    messages.add_message(
+        request, messages.SUCCESS,
+        format_html(('Successfully saved %(link) suggestion. ') %
+                    {'link': link_to_change_obj(obj)}))
 
 
-def save_message_handler(request):
-    messages.add_message(request, messages.SUCCESS,
-                         default_success_message.format('saved'))
-
-
-def submit_message_handler(request):
-    messages.add_message(request, messages.SUCCESS,
-                         default_success_message.format('submited'))
+def submit_message_handler(request, obj):
+    messages.add_message(
+        request, messages.SUCCESS,
+        format_html(('Successfully submited %(link) suggestion. ') %
+                    {'link': link_to_change_obj(obj)}))
