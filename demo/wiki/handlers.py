@@ -4,10 +4,12 @@ from .support_functions import (model_has_relation, obj_has_foreignkey,
                                 get_model_of_foreignkey_field, is_obj_wiki,
                                 is_obj_new)
 
+
 def handle_save(request, obj):
     obj.save()
     obj.wiki_id = obj.pk
-    obj.save(update_fields=["wiki_id"])
+    obj.save(update_fields=['wiki_id'])
+
 
 def handle_submit(request, obj):
     is_wiki = is_obj_wiki(obj)
@@ -36,6 +38,7 @@ def handle_submit(request, obj):
 
     if not has_foreignkey:
         request.session['parent'] = obj.pk
+
 
 def handle_accept(request, obj):
     if obj.wiki_id is None:
@@ -67,6 +70,7 @@ def handle_accept(request, obj):
 
     parent.save()
     obj.delete()
+
 
 def handle_reject(request, obj):
     obj.delete()
