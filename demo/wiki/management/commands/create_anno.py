@@ -2,6 +2,7 @@ import sys
 from django.contrib.auth.models import User, Group, Permission
 from django.core.management.base import BaseCommand
 from django.contrib.contenttypes.models import ContentType
+from wiki.support_functions import list_of_models
 
 GROUP = 'ANNO'
 
@@ -17,9 +18,13 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
 
-        if len(sys.argv) < 2:
+        if len(sys.argv) <= 2:
             self.stdout.write("Please specify model/s for annoymous user.")
-            return
+            models = list_of_models()
+            self.stdout.write("Available models:")
+            for model in models:
+                self.stdout.write("\t{}".format(model.__name__.lower()))
+            exit()
 
         parser.add_argument('model', nargs='+', type=str)
 
