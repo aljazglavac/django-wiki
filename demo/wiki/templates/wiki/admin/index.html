@@ -1,5 +1,5 @@
 {% extends "admin/base_site.html" %}
-{% load i18n static %}
+{% load i18n static has_group %}
 
 {% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}">{% endblock %}
 
@@ -54,7 +54,7 @@
 {% endblock %}
 
 {% block sidebar %}
-{% if request.user.is_superuser %}
+{% if request.user.is_superuser or request.user|has_group:"ADMIN" %}
 <div id="content-related">
     <div class="module" id="recent-actions-module">
 			<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
