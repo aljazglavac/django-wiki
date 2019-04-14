@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q, F
 from django.contrib.auth.models import User
 from django.contrib import auth
-from .support_functions import model_has_relation 
+from .support_functions import model_has_relation, link_to_change_obj
 
 SYS_DEF = [
     'log entry', 'permission', 'group', 'user', 'content type', 'session'
@@ -43,9 +43,8 @@ def get_wiki_entries(request):
         if model_has_relation(model):
             continue
         for wiki in model.objects.filter(is_not_wiki).distinct():
-            change_link = "<a href='/admin/{}/{}/{}/change/'>{} in {}</a><br>".format(
-                wiki._meta.app_label, model.__name__.lower(), wiki.pk,
-                str(wiki), model.__name__)
+            text = "{} in {}".format(str(wiki), model.__name__)
+            change_link = link_to_change_obj(wiki, text)
             all_model_wikis.extend(change_link)
 
     if len(all_model_wikis) == 0:

@@ -47,8 +47,8 @@ def is_obj_new(obj):
     return obj.pk == None
 
 
-def link_to_change_obj(obj, text, br):
+def link_to_change_obj(obj, text):
     model = type(obj)
-    change_link = "<a href='/admin/{}/{}/{}/change/'>{}</a>{}".format(
-        obj._meta.app_label, model.__name__.lower(), obj.pk, text, br)
+    change_link = "<a href='/admin/{}/{}/{}/change/'>{}</a><br>".format(
+        obj._meta.app_label, model.__name__.lower(), obj.pk, text)
     return change_link
