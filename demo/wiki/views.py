@@ -7,18 +7,24 @@ from django.contrib import auth
 from .support_functions import model_has_relation, link_to_change_obj, list_of_models
 from .options import SYS_DEF
 
-def anno_login(request):
+
+def wiki_login(request):
+    path_split = request.path.split('/')
+    if path_split[-1] == 'admin':
+        SLUG = 'ADMIN'
+    else:
+        SLUG = 'ANNO'
     try:
-        model = request.path.split('/')[2]
-        anno = User.objects.get(username="ANNO-" + model)
-        auth.login(request, anno)
+        model = path_split[2]
+        user = User.objects.get(username="{}-{}".format(SLUG,model))
+        auth.login(request, user)
         return redirect('/admin/')
     except:
         try:
-            anno = User.objects.get(username="ANNO")
+            user = User.objects.get(username=SLUG)
         except User.DoesNotExist:
             return redirect('/admin/login')
-        auth.login(request, anno)
+        auth.login(request, user)
         return redirect('/admin/')
     return redirect('/admin/login')
 
