@@ -88,6 +88,6 @@ class Command(BaseCommand):
 
             group.user_set.add(user)
 
-        group_all.user_set.add(annouser)
+        group_all.user_set.add(user)
 
         self.stdout.write("Created {} user successfully.".format(GROUP.lower()))
