@@ -3,15 +3,7 @@ from django.contrib.auth.models import User, Group, Permission
 from django.core.management.base import BaseCommand
 from django.contrib.contenttypes.models import ContentType
 from wiki.support_functions import list_of_models
-
-GROUP = 'ANNO'
-
-PERMISSIONS = [
-    'add',
-    'change',
-    'view',
-]
-
+from wiki.options import GROUP, PERMISSIONS
 
 class Command(BaseCommand):
     help = 'Create anonymous user and anonymous group.'
@@ -63,7 +55,7 @@ class Command(BaseCommand):
 
             self.stdout.write(
                 "Creating ANNO group for model {}.".format(model))
-            for permission in PERMISSIONS:
+            for permission in PERMISSIONS[:-1]:
                 codename = '{}_{}'.format(permission, model)
                 permission = Permission.objects.get(codename=codename)
                 anno_group.permissions.add(permission)
