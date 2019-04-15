@@ -62,8 +62,13 @@ def list_of_models():
 
 
 def is_user_anno(user):
-    groups = user.groups.values_list('name',flat=True) 
+    groups = user.groups.values_list('name', flat=True)
     for group in groups:
         if 'ANNO' in group:
             return True
     return False
+
+
+def obj_model_from_name(name):
+    ct = ContentType.objects.get(model=name)
+    return ct.model_class()
