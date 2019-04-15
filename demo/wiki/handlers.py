@@ -1,7 +1,7 @@
 from django.forms.models import model_to_dict
 from .support_functions import (model_has_relation, get_foreignkey_field_name,
                                 get_model_of_foreignkey_field, is_user_anno,
-                                obj_status)
+                                obj_status, set_relation_field)
 from .options import DO_NOT_UPDATE
 
 
@@ -26,16 +26,12 @@ def handle_submit(request, obj):
             has_foreignkey = False
             pass
 
-    if is_new:
-        setattr(obj, 'wiki_id', None)
-        obj.save()
-    elif is_wiki:
-        obj.save()
-    elif not is_wiki:
+    if not is_wiki:
         setattr(obj, 'id', None)
         if has_foreignkey:
             setattr(obj, parent_field, wiki_parent)
-        obj.save()
+
+    obj.save()
 
     if not has_foreignkey:
         request.session['parent'] = obj.pk
@@ -54,14 +50,7 @@ def handle_accept(request, obj):
     if not has_wiki:
         setattr(obj, 'wiki_id', obj.pk)
         if has_foreignkey:
-            related_model = get_model_of_foreignkey_field(obj)
-            related_field = get_foreignkey_field_name(obj)
-            try:
-                related_id = int(request.session['parent'])
-                related_obj = related_model.objects.get(pk=related_id)
-            except:
-                related_obj = getattr(obj, related_field)
-
+            r_field, r_obj = set_relation_field(request, obj)
             setattr(obj, related_field, related_obj)
 
         obj.save()
@@ -83,15 +72,8 @@ def handle_accept(request, obj):
     if not has_foreignkey:
         request.session['parent'] = parent.pk
     else:
-        foreignkey_model = get_model_of_foreignkey_field(parent)
-        foreignkey_field = get_foreignkey_field_name(parent)
-        try:
-            foreignkey_id = int(request.session['parent'])
-            foreignkey_obj = foreignkey_model.objects.get(pk=foreignkey_id)
-        except:
-            foreignkey_obj = getattr(parent, foreignkey_field)
-
-        setattr(parent, foreignkey_name, foreignkey_obj)
+        r_field, r_obj = set_relation_field(request, parent)
+        setattr(parent, r_field, r_obj)
 
     parent.save()
     obj.delete()
