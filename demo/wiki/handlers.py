@@ -1,25 +1,19 @@
 from django.forms.models import model_to_dict
-from .support_functions import (model_has_relation, obj_has_foreignkey,
-                                get_foreignkey_field_name,
-                                get_model_of_foreignkey_field, is_obj_wiki,
-                                is_obj_new, is_user_anno, has_wiki_parent)
+from .support_functions import (model_has_relation, get_foreignkey_field_name,
+                                get_model_of_foreignkey_field, is_user_anno,
+                                obj_status)
 from .options import DO_NOT_UPDATE
 
 
 def handle_save(request, obj):
-    if is_user_anno(request.user):
-        obj.save()
-    else:
-        obj.save()
+    obj.save()
+    if not is_user_anno(request.user):
         setattr(obj, 'wiki_id', obj.pk)
-        #obj.wiki_id = obj.pk
         obj.save(update_fields=['wiki_id'])
 
 
 def handle_submit(request, obj):
-    is_wiki = is_obj_wiki(obj)
-    is_new = is_obj_new(obj)
-    has_foreignkey = obj_has_foreignkey(obj)
+    is_wiki, is_new, has_wiki, has_foreignkey = obj_status(obj)
 
     if has_foreignkey:
         parent_model = get_model_of_foreignkey_field(obj)
@@ -28,27 +22,19 @@ def handle_submit(request, obj):
         try:
             wiki_parent_id = request.session['parent']
             wiki_parent = parent_model.objects.get(pk=int(wiki_parent_id))
-            print(wiki_parent)
         except:
             has_foreignkey = False
             pass
 
     if is_new:
         setattr(obj, 'wiki_id', None)
-        #obj.wiki_id = None
         obj.save()
     elif is_wiki:
         obj.save()
     elif not is_wiki:
         setattr(obj, 'id', None)
-        #copy_of_obj = dict(model_to_dict(obj))
-        #copy_of_obj['wiki_id'] = copy_of_obj['id']
-        #copy_of_obj['id'] = None
         if has_foreignkey:
-            #copy_of_obj[parent_field] = wiki_parent
             setattr(obj, parent_field, wiki_parent)
-        #print(copy_of_obj)
-        #obj = type(obj)(**copy_of_obj)
         obj.save()
 
     if not has_foreignkey:
@@ -58,10 +44,7 @@ def handle_submit(request, obj):
 
 
 def handle_accept(request, obj):
-    has_foreignkey = obj_has_foreignkey(obj)
-    is_wiki = is_obj_wiki(obj)
-    is_new = is_obj_new(obj)
-    has_wiki = has_wiki_parent(obj)
+    is_wiki, is_new, has_wiki, has_foreignkey = obj_status(obj)
 
     if not is_wiki:
         if not has_foreignkey:
@@ -75,7 +58,7 @@ def handle_accept(request, obj):
             related_field = get_foreignkey_field_name(obj)
             try:
                 related_id = int(request.session['parent'])
-                related_obj = related_model.object.get(pk=related_id)
+                related_obj = related_model.objects.get(pk=related_id)
             except:
                 related_obj = getattr(obj, related_field)
 
@@ -101,8 +84,13 @@ def handle_accept(request, obj):
         request.session['parent'] = parent.pk
     else:
         foreignkey_model = get_model_of_foreignkey_field(parent)
-        foreignkey_obj = foreignkey_model.objects.get(
-            pk=int(request.session['parent']))
+        foreignkey_field = get_foreignkey_field_name(parent)
+        try:
+            foreignkey_id = int(request.session['parent'])
+            foreignkey_obj = foreignkey_model.objects.get(pk=foreignkey_id)
+        except:
+            foreignkey_obj = getattr(parent, foreignkey_field)
+
         setattr(parent, foreignkey_name, foreignkey_obj)
 
     parent.save()

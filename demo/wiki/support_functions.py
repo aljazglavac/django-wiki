@@ -76,3 +76,12 @@ def is_user_anno(user):
 def obj_model_from_name(name):
     ct = ContentType.objects.get(model=name)
     return ct.model_class()
+
+
+def obj_status(obj):
+    return [
+        is_obj_wiki(obj),
+        is_obj_new(obj),
+        has_wiki_parent(obj),
+        obj_has_foreignkey(obj)
+    ]
