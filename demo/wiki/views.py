@@ -44,8 +44,6 @@ def get_wiki_entries(request):
     for model in models:
         if model is None:
             continue
-        if model_has_relation(model):
-            continue
         for wiki in model.objects.filter(is_not_wiki).distinct():
             text = "{} in {}".format(str(wiki), model.__name__)
             change_link = link_to_change_obj(wiki, text)

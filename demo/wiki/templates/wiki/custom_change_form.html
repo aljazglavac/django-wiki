@@ -1,8 +1,8 @@
 {% extends 'admin/change_form.html' %}
-{% load static is_wiki has_group has_wiki_entry%}
+{% load static is_wiki has_group has_wiki_entry is_any_related_wiki %}
 {% block submit_buttons_bottom %}
 
-	{% if request.user.is_superuser and request.path|is_wiki %}
+	{% if request.user.is_superuser and request.path|is_wiki or request.path|is_any_related_wiki %}
 		<div class="submit-row">
 			<input type="submit" value='Accept' name="_accept" />
 			<input type="submit" value='Reject' name="_reject" />

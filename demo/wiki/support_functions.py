@@ -49,6 +49,10 @@ def is_obj_new(obj):
     return obj.pk == None
 
 
+def has_wiki_parent(obj):
+    return obj.wiki_id != None
+
+
 def link_to_change_obj(obj, text):
     model = type(obj)
     change_link = "<a href='/admin/{}/{}/{}/change/'>{}</a><br>".format(

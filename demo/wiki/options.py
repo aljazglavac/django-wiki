@@ -8,3 +8,5 @@ PERMISSIONS = [
     'view',
     'delete'
 ]
+
+DO_NOT_UPDATE = set(['id', 'wiki_id'])
