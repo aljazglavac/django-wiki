@@ -11,7 +11,7 @@ class CustomManager(m.Manager):
 
 
 class WikiModel(m.Model):
-    wiki_id = m.IntegerField(null=True)
+    wiki_id = m.IntegerField(null=True, default=None)
     objects = CustomManager()
 
     class Meta:
