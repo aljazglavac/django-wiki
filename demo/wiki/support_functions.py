@@ -85,3 +85,14 @@ def obj_status(obj):
         has_wiki_parent(obj),
         obj_has_foreignkey(obj)
     ]
+
+
+def set_relation_field(request, obj):
+    relation_model = get_model_of_foreignkey_field(obj)
+    relation_field = get_foreignkey_field_name(obj)
+    try:
+        relation_id = int(request.session['parent'])
+        relation_obj = related_model.objects.get(pk=relation_id)
+    except:
+        relation_obj = getattr(obj, relation_field)
+    return [relation_field, relation_obj]
