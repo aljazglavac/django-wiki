@@ -1,5 +1,6 @@
 from django import template
 from django.contrib.contenttypes.models import ContentType
+from wiki.support_functions import is_obj_wiki
 
 register = template.Library()
 
@@ -12,7 +13,6 @@ def is_wiki(path):
     except: return False
     try:
         p_id = int(path.split('/')[-3])
-        p_wiki_id = model.objects.get(pk=p_id).wiki_id
-        return p_wiki_id != p_id or p_wiki_id == None
+        return is_obj_wiki(model.objects.get(pk=p_id))
     except:
         return False
