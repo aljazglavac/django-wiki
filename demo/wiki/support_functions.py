@@ -42,7 +42,7 @@ def get_model_of_foreignkey_field(obj):
 
 def is_obj_wiki(obj):
     return ( obj.pk != obj.wiki_id ) \
-          or ( obj.wiki_id == None and obj.pk != None )
+          or ( obj.wiki_id == None )
 
 
 def is_obj_new(obj):
@@ -59,3 +59,11 @@ def link_to_change_obj(obj, text):
 def list_of_models():
     all_content = ContentType.objects.all()
     return [c.model_class() for c in all_content if str(c) not in SYS_DEF]
+
+
+def is_user_anno(user):
+    groups = user.groups.values_list('name',flat=True) 
+    for group in groups:
+        if 'ANNO' in group:
+            return True
+    return False
