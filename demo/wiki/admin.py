@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.forms.models import ModelForm 
+from django.forms.models import ModelForm
 from django.shortcuts import redirect
 from .messages import (accept_message_handler, save_message_handler,
                        submit_message_handler, reject_message_handler)
@@ -7,8 +7,6 @@ from .handlers import (handle_save, handle_submit, handle_accept,
                        handle_reject)
 
 admin.site.index_template = 'wiki/admin/index.html'
-
-do_not_update = set(['id', 'wiki_id'])
 
 
 class WikiInlineModelForm(ModelForm):
@@ -26,11 +24,11 @@ class WikiModelAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         if '_accept' in request.POST:
-            sug = handle_accept(request)
+            sug = handle_accept(request, obj)
             accept_message_handler(request, sug)
         elif '_reject' in request.POST:
-            reject_message_handler(request)
             handle_reject(obj)
+            reject_message_handler(request, obj)
         elif '_save' in request.POST:
             handle_save(request, obj)
             save_message_handler(request, obj)
@@ -45,7 +43,7 @@ class WikiModelAdmin(admin.ModelAdmin):
             if '_accept' in request.POST:
                 handle_accept(request, instance)
             elif '_reject' in request.POST:
-                handle_reject(request, instance)
+                handle_reject(instance)
             elif '_save' in request.POST:
                 handle_save(request, instance)
             elif '_submit' in request.POST:
