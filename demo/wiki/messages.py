@@ -7,7 +7,7 @@ def accept_message_handler(request, obj):
     messages.add_message(
         request, messages.SUCCESS,
         format_html(('Successfully accepted suggestion. %(link)s') %
-                    {'link': link_to_change_obj(obj, 'See it here. ', '')}))
+                    {'link': link_to_change_obj(obj, 'See it here. ')}))
 
 
 def reject_message_handler(request, obj):
@@ -19,11 +19,11 @@ def save_message_handler(request, obj):
     messages.add_message(
         request, messages.SUCCESS,
         format_html(('Successfully saved suggestion. %(link)s') %
-                    {'link': link_to_change_obj(obj, 'See it here. ', '')}))
+                    {'link': link_to_change_obj(obj, 'See it here. ')}))
 
 
 def submit_message_handler(request, obj):
     messages.add_message(
         request, messages.SUCCESS,
         format_html(('Successfully submited suggestion. %(link)s') %
-                    {'link': link_to_change_obj(obj, "See it here. ", "")}))
+                    {'link': link_to_change_obj(obj, 'See it here. ')}))
