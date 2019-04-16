@@ -50,7 +50,7 @@ def is_obj_new(obj):
 
 
 def has_wiki_parent(obj):
-    return obj.wiki_id != None
+    return obj.wiki_id != None and obj.pk != obj.wiki_id
 
 
 def link_to_change_obj(obj, text):
