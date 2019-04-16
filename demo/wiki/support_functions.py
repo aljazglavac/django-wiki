@@ -96,3 +96,7 @@ def set_relation_field(request, obj):
     except:
         relation_obj = getattr(obj, relation_field)
     return [relation_field, relation_obj]
+
+
+def clean_request_sesstion(requset, field):
+    del (request.sesstion[field])
