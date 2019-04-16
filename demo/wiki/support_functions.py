@@ -92,7 +92,7 @@ def set_relation_field(request, obj):
     relation_field = get_foreignkey_field_name(obj)
     try:
         relation_id = int(request.session['parent'])
-        relation_obj = related_model.objects.get(pk=relation_id)
+        relation_obj = relation_model.objects.get(pk=relation_id)
     except:
         relation_obj = getattr(obj, relation_field)
     return [relation_field, relation_obj]
