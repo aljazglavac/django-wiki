@@ -2,12 +2,12 @@
 {% load static is_wiki has_group has_wiki_entry is_any_related_wiki %}
 {% block submit_buttons_bottom %}
 
-	{% if request.user.is_superuser and request.path|is_wiki or request.path|is_any_related_wiki %}
+	{% if request.path|is_wiki or request.path|is_any_related_wiki and request.user.is_superuser %}
 		<div class="submit-row">
 			<input type="submit" value='Accept' name="_accept" />
 			<input type="submit" value='Reject' name="_reject" />
 		</div>
-	{% elif request.user|has_group:"ANNO" and not request.path|is_wiki %}
+	{% elif not request.path|is_wiki and not request.path|is_any_related_wiki and request.user|has_group:"ANNO" %}
 		<div class="submit-row">
 			<input type="submit" value='Submit' name="_submit" />
 		</div>
