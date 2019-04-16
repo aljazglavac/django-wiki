@@ -5,6 +5,7 @@ from .messages import (accept_message_handler, save_message_handler,
                        submit_message_handler, reject_message_handler)
 from .handlers import (handle_save, handle_submit, handle_accept,
                        handle_reject)
+from .support_functions import clean_request_sesstion
 
 admin.site.index_template = 'wiki/admin/index.html'
 
@@ -20,6 +21,7 @@ class WikiModelAdmin(admin.ModelAdmin):
     change_form_template = 'wiki/custom_change_form.html'
 
     def message_user(self, *args, **kwargs):
+        clean_request_sesstion(args[0], 'parent')
         pass
 
     def save_model(self, request, obj, form, change):
