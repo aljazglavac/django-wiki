@@ -98,5 +98,5 @@ def set_relation_field(request, obj):
     return [relation_field, relation_obj]
 
 
-def clean_request_sesstion(requset, field):
-    del (request.sesstion[field])
+def clean_request_sesstion(request, field):
+    del (request.session[field])
