@@ -99,4 +99,5 @@ def set_relation_field(request, obj):
 
 
 def clean_request_sesstion(request, field):
-    del (request.session[field])
+    if field in request.session:
+        del (request.session[field])
