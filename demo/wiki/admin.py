@@ -1,11 +1,13 @@
 from django.contrib import admin
 from django.forms.models import ModelForm
 from django.shortcuts import redirect
+from django.db.models import ForeignKey
 from .messages import (accept_message_handler, save_message_handler,
                        submit_message_handler, reject_message_handler)
 from .handlers import (handle_save, handle_submit, handle_accept,
                        handle_reject)
-from .support_functions import clean_request_sesstion
+from .support_functions import (clean_request_sesstion, obj_model_from_name,
+                                )
 
 admin.site.index_template = 'wiki/admin/index.html'
 
@@ -23,6 +25,16 @@ class WikiModelAdmin(admin.ModelAdmin):
     def message_user(self, *args, **kwargs):
         clean_request_sesstion(args[0], 'parent')
         pass
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        field_name = db_field.related_query_name()
+        model = obj_model_from_name(field_name)
+        fields = model._meta.get_fields()
+        for f in fields:
+            if isinstance(f, ForeignKey):
+                kwargs["queryset"] = f.related_model.objects.valid()
+                break
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     def save_model(self, request, obj, form, change):
         if '_accept' in request.POST:
