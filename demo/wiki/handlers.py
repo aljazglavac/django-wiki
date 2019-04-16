@@ -19,17 +19,13 @@ def handle_submit(request, obj):
         parent_model = get_model_of_foreignkey_field(obj)
         parent_field = get_foreignkey_field_name(obj)
 
-        try:
-            wiki_parent_id = request.session['parent']
-            wiki_parent = parent_model.objects.get(pk=int(wiki_parent_id))
-        except:
-            has_foreignkey = False
-            pass
+        if 'parent' in request.session:
+            parent_id = int(request.session['parent'])
+            parent_object = parent_model.objects.get(pk=parent_id)
+            setattr(obj, parent_field, parent_object)
 
     if not is_wiki:
         setattr(obj, 'id', None)
-        if has_foreignkey:
-            setattr(obj, parent_field, wiki_parent)
 
     obj.save()
 
@@ -51,7 +47,7 @@ def handle_accept(request, obj):
         setattr(obj, 'wiki_id', obj.pk)
         if has_foreignkey:
             r_field, r_obj = set_relation_field(request, obj)
-            setattr(obj, related_field, related_obj)
+            setattr(obj, r_field, r_obj)
 
         obj.save()
         return obj
