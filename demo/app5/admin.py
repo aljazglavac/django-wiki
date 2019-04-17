@@ -7,7 +7,6 @@ class KnjigaInline(admin.StackedInline):
     model = Knjiga 
     form = WikiInlineModelForm
     extra = 0
-    readonly_fields = ["wiki_id"]
 
 
 @admin.register(Oseba)

@@ -18,7 +18,6 @@ class WikiInlineModelForm(ModelForm):
 
 
 class WikiModelAdmin(admin.ModelAdmin):
-    readonly_fields = ('wiki_id', )
 
     change_form_template = 'wiki/custom_change_form.html'
 
