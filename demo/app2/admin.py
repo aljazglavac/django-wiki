@@ -1,20 +1,20 @@
 from django.contrib import admin
 from wiki.admin import WikiModelAdmin  # USER ADD
 from .models import Reporter, Post
+from wiki.admin import WikiInlineModelForm
 
 
 class PostInline(admin.StackedInline):
     model = Post
+    form = WikiInlineModelForm
     extra = 0
-    readonly_fields = ["wiki_id"]
 
 
 @admin.register(Reporter)
 class ReporterAdmin(WikiModelAdmin):  # USER ADD
     inlines = [PostInline]
-    readonly_fields = ["wiki_id"]
 
 
 @admin.register(Post)
 class PostAdmin(WikiModelAdmin):
-    readonly_fields = ["wiki_id"]
+    pass
