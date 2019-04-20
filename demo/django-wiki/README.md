@@ -1,9 +1,6 @@
-=====
-Administration pannel wiki plugin
-=====
+# Administration pannel wiki plugin
 
-Quick start
------------
+## Quick start
 
 1. Add "polls" to your INSTALLED_APPS setting like this::
 
