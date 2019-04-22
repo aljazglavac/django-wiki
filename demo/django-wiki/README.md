@@ -125,20 +125,20 @@ class BookAdmin(WikiModelAdmin):
 
 ### Using custom management command 
 
+Create top level administrator and annonimous user.
 ```
 ./manage.py wiki user
 ```
-Create top level administrator and annonimous user.
 
+Display models and which one have admin or anno user.
 ```
 ./manage.py wiki list [MODELS]
 ```
-Display models and which one have admin or anno user.
 
+Creates admin or anno users and grous for models.   
 ```
 ./manage.py wiki create admin|anno [MODELS]
 ```
-Creates admin or anno users and grous for models.   
 When creating **admin**, super user needs to set password in administration site:
 1. Home
 2. Authentication and Authorization
@@ -146,6 +146,33 @@ When creating **admin**, super user needs to set password in administration site
 4. Created user
 5. Under password, click 'this form' link
 
+
+#### Example for models up above
+
+This will create:
+* top level admin (username and password: wikiadmin)
+* top level annonimous user
+* specific anonimous users for author and book models
+```
+./manage.py wiki user 
+./manage.py wiki create anno author book
+```
+
+### Using administration site as annonimous user
+
+New endpoits are created:
+* **/wiki** -> will automaticlly login main annonimous user
+* **/wiki/<model>** -> will login annonimous user for specified model
+**NOTE:** endpoint /wiki/<model> requires annonimous user to exist.
+
 ## Screenshots
 
 ## Demo
+
+```
+git clone --single-branch --branch demo 
+cd ./django-wiki
+pipenv install && pipenv shell
+cd demo
+./manage.py runserver
+```
