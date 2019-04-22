@@ -1,5 +1,0 @@
-include LICENSE
-include README.rst
-recursive-include wiki/templates *
-recursive-include wiki/templatetags *
-recursive-include wiki/management *
