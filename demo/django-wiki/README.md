@@ -19,6 +19,7 @@ Extension can be very usefull in any sort of tourist aplication, where locals ca
 * Messaging system is adapted for submiting, reviewing and other operations on models.
 * Built in custom model managers for filtering out valid and wiki entries.
 * Administrators have a list of current staged objects on index site.
+* Each model or app can have it's own administrator and annonimous user.
 * Custom admin change site buttons.
 * Support for any model entity.
 
@@ -137,7 +138,13 @@ Display models and which one have admin or anno user.
 ```
 ./manage.py wiki create admin|anno [MODELS]
 ```
-Creates admin or anno users and grous for models.
+Creates admin or anno users and grous for models.   
+When creating **admin**, super user needs to set password in administration site:
+1. Home
+2. Authentication and Authorization
+3. Users
+4. Created user
+5. Under password, click 'this form' link
 
 ## Screenshots
 
