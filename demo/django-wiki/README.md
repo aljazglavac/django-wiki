@@ -94,7 +94,7 @@ from wiki.admin import WikiModelAdmin, WikiInlineModelForm # for inline option
 ```python
 @admin.register(Author)
 class AuthorAdmin(WikiModelAdmin):
-		pass
+    pass
 
 
 @admin.register(Book)
