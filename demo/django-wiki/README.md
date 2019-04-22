@@ -1,6 +1,6 @@
 # Administration pannel wiki plugin
 
-**Wiki operation extension for Django administration site**
+**Wiki operation extension for Django administration site.**
 
 ## Overview 
 
@@ -47,8 +47,8 @@ pip install django-admin-wiki-widget
 
 ```python
 INSTALLED_APPS = [
-		...
-		'wiki',
+	...
+	'wiki',
 ]
 ```
 
@@ -59,7 +59,7 @@ INSTALLED_APPS = [
 
 **Example for two models (Author and Book)**
 * Every model that you want to use wiki extension needs to be derived from `WikiModel`.
-* `WikiModel` automaticli and `wiki_id` field, that is necessary for wiki operations to work.
+* `WikiModel` automatically and `wiki_id` field, that is necessary for wiki operations to work.
 
 **Imports**
 ```python
@@ -133,7 +133,7 @@ Displayes all models and which one have admin or anno user.
 ./manage.py wikicreate admin|wiki [MODELS]
 ```
 
-If **no** MODEL is specified, wikicreate command will dispaly:
+If **no** MODELS are specified, wikicreate command will dispaly:
 * available models,
 * which models have admins or anno users
 
