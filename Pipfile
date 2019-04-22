@@ -7,8 +7,6 @@ verify_ssl = true
 
 [packages]
 django = "*"
-psycopg2 = "*"
-yapf = "*"
 
 [requires]
 python_version = "3.6"
