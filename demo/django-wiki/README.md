@@ -177,3 +177,7 @@ pipenv install && pipenv shell
 cd demo
 ./manage.py runserver
 ```
+
+1. Create new wiki entry on [http://localhost:8000/wiki](/wiki).
+3. Logout.
+2. Accept or reject this wiki entry on [http://localhost:8000/admin](admin page). (admin, admin)
