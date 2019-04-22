@@ -7,12 +7,12 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md')) as readme:
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
-    name='django-admin-wiki',
-    version='0.2',
+    name='django-admin-wiki-extension',
+    version='0.0.1',
     packages=find_packages(),
     include_package_data=True,
     license='BSD License',
-    description='Administratio site wiki plugin.',
+    description='Django administration site wiki extension.',
     long_description=README,
     url='https://www.github.com/aljazglavac/',
     author='Aljaž Glavač',
@@ -25,7 +25,6 @@ setup(
         'License :: OSI Approved :: BSD License', 
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
