@@ -162,9 +162,9 @@ This will create:
 
 New endpoits are created:
 * **/wiki** -> will automaticlly login main annonimous user
-* **/wiki/<model>** -> will login annonimous user for specified model
+* **/wiki/MODEL** -> will login annonimous user for specified model
 
-**NOTE:** endpoint /wiki/<model> requires annonimous user to exist.
+**NOTE:** endpoint /wiki/MODEL requires annonimous user to exist.
 
 ## Screenshots
 
