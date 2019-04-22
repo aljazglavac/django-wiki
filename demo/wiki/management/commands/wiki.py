@@ -37,7 +37,7 @@ class Command(BaseCommand):
             self.stdout.write("{} has {}.".format(model.capitalize(),
                                                   ', '.join(perms)))
         else:
-            self.stdout.write("Wrong model ({}).".format(model))
+            self.stdout.write("No info for model {}.".format(model.capitalize()))
         exit()
 
     def create_top_level_admin(self):
@@ -54,7 +54,6 @@ class Command(BaseCommand):
             user.is_staff = True
             user.is_superuser = True
             user.save()
-        exit()
 
     def create_top_level_anno(self):
         GROUP = 'ANNO'
@@ -77,11 +76,9 @@ class Command(BaseCommand):
                 group_all.permissions.add(permission)
         self.stdout.write("Adding ANNO user to all ANNO groups.")
         group_all.user_set.add(user)
-        exit()
 
     def add_arguments(self, parser):
 
-        print(sys.argv)
         if len(sys.argv) == 2:
             self.stdout.write(
                 "Please specify if you want to create or list admin or annoymous user."
@@ -89,45 +86,47 @@ class Command(BaseCommand):
             self.stdout.write("Usage:")
             self.stdout.write("\t./manage.py wiki create|list")
             exit()
-        elif len(sys.argv) == 3:
-            control = sys.argv[2]
-            if control == 'list':
+
+        control = sys.argv[2]
+        if control == 'list':
+            if len(sys.argv) == 3:
                 self.list_all_models()
-            elif control == 'create':
+            elif len(sys.argv) > 3:
+                models = sys.argv[3:]
+                for model in models:
+                    self.list_models_info(model)
+        elif control == 'create':
+            if len(sys.argv) == 3:
                 self.stdout.write("Do you want to create admin or anno user?")
                 self.stdout.write("Usage:")
                 self.stdout.write("\t./manage.py wiki create admin|anno")
-            elif control == 'user':
+                exit()
+            elif len(sys.argv) == 4:
+                self.stdout.write("Specify a model.")
+                self.stdout.write("List all models with:")
+                self.stdout.write("\t ./manage.py wiki list")
+                exit()
+        elif control == 'user':
+            if len(sys.argv) == 3:
                 self.stdout.write(
                     "Creating top level annonimous and admin user")
                 self.create_top_level_admin()
                 self.create_top_level_anno()
             else:
-                self.stdout.write("Wrong operation.")
-                self.stdout.write("Usage:")
-                self.stdout.write("\t./manage.py wiki create|list")
+                self.stdout.write("No more arguments allowed.")
             exit()
-        elif len(sys.argv) == 4:
-            control = sys.argv[2]
-            operation = sys.argv[3]
-            if operation in ['admin', 'anno'] and control == 'create':
-                self.stdout.write("Specify a model.")
-                self.stdout.write("List all models with:")
-                self.stdout.write("\t ./manage.py wiki list")
-                exit()
-            elif operation not in ['admin', 'anno'] and control == 'list':
-                models = sys.argv[3:]
-                for model in models:
-                    self.list_models_info(model)
+        else:
+            self.stdout.write("Wrong operation.")
+            self.stdout.write("Usage:")
+            self.stdout.write("\t./manage.py wiki create|list")
             exit()
 
         parser.add_argument('args', nargs='+', type=str)
 
     def handle(self, *args, **options):
 
-        GROUP = args[2].upper()
+        GROUP = args[1].upper()
         MODELS = args[2:]
-        print(GROUP, MODELS)
 
         group_all, created = Group.objects.get_or_create(name=GROUP)
 
@@ -176,8 +175,6 @@ class Command(BaseCommand):
                 pass
 
             group.user_set.add(user)
-
-        group_all.user_set.add(user)
 
         self.stdout.write("Created {} user successfully.".format(
             GROUP.lower()))
