@@ -122,21 +122,22 @@ class BookAdmin(WikiModelAdmin):
 ```
 
 
-### Creating admins and annonimous users
+### Using custom management command 
 
 ```
-./manage.py wikicreate list
+./manage.py wiki user
 ```
-Displayes all models and which one have admin or anno user.
+Create top level administrator and annonimous user.
 
 ```
-./manage.py wikicreate admin|wiki [MODELS]
+./manage.py wiki list [MODELS]
 ```
+Display models and which one have admin or anno user.
 
-If **no** MODELS are specified, wikicreate command will dispaly:
-* available models,
-* which models have admins or anno users
-
+```
+./manage.py wiki create admin|anno [MODELS]
+```
+Creates admin or anno users and grous for models.
 
 ## Screenshots
 
