@@ -29,7 +29,7 @@ Extension can be very usefull in any sort of tourist aplication, where locals ca
 * Python(2.7, 3.6)
 * Django(2.2)
 
-# Limitations
+## Limitations
 
 For now, this extension can work with three types of models:  
 * Basic (model with no foreign keys)
@@ -163,6 +163,7 @@ This will create:
 New endpoits are created:
 * **/wiki** -> will automaticlly login main annonimous user
 * **/wiki/<model>** -> will login annonimous user for specified model
+
 **NOTE:** endpoint /wiki/<model> requires annonimous user to exist.
 
 ## Screenshots
