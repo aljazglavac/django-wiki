@@ -178,6 +178,6 @@ cd demo
 ./manage.py runserver
 ```
 
-1. Create new wiki entry on [http://localhost:8000/wiki](/wiki).
-3. Logout.
-2. Accept or reject this wiki entry on [http://localhost:8000/admin](admin page). (admin, admin)
+1. Create new wiki entry on /wiki.
+2. Logout and login as admin (admin, admin).
+3. Accept or reject wiki entry that you have created.
