@@ -39,11 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'wiki',
     'app',
-    'app1',
-    'app2',
-    'app3',
-    'app4',
-    'app5',
 ]
 
 MIDDLEWARE = [
@@ -82,15 +77,10 @@ WSGI_APPLICATION = 'demo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.environ.get('PGDATABASE', 'wiki'),
-        'USER': os.environ.get('PGUSER', 'wiki'),
-        'PASSWORD': os.environ.get('PGPASSWORD', 'wiki'),
-        'HOST': os.environ.get('PGHOST', 'localhost'),
-        'PORT': '5432'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
