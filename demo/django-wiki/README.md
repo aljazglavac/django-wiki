@@ -85,7 +85,7 @@ class Book(WikiModel):
 In your project app, edit urls.py file.
 ```python
 urlpatterns = [
-		...,
+    ...,
     path('wiki/', include('wiki.urls'))
 ]
 ```
