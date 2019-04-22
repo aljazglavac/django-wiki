@@ -14,6 +14,7 @@ setup(
     license='BSD License',
     description='Django administration site wiki extension.',
     long_description=README,
+    long_description_content_type='text/markdown',
     url='https://www.github.com/aljazglavac/',
     author='Aljaž Glavač',
     author_email='aljaz.glavac97@gmail.com',
