@@ -81,6 +81,16 @@ class Book(WikiModel):
 ```
 
 
+### Urls configuration
+In your project app, edit urls.py file.
+```python
+urlpatterns = [
+		...,
+    path('wiki/', include('wiki.urls'))
+]
+```
+
+
 ### Admin configuration
 
 **Imports**
@@ -171,7 +181,7 @@ New endpoits are created:
 ## Demo
 
 ```
-git clone --single-branch --branch demo 
+git clone https://github.com/aljazglavac/django-wiki.git git --single-branch --branch demo 
 cd ./django-wiki
 pipenv install && pipenv shell
 cd demo
