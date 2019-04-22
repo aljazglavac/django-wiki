@@ -184,6 +184,7 @@ New endpoits are created:
 git clone https://github.com/aljazglavac/django-wiki.git git --single-branch --branch demo 
 cd ./django-wiki
 pipenv install && pipenv shell
+pip install -i https://test.pypi.org/simple/ django-admin-wiki-extension
 cd demo
 ./manage.py runserver
 ```
